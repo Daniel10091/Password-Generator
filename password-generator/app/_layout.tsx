@@ -1,9 +1,12 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { SplashScreen } from 'expo-router';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ModalScreen from './modal';
+import { HomeScreen } from './(tabs)/generator';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -42,15 +45,19 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+const Stack = createNativeStackNavigator();
+
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <NavigationContainer independent={true}>
+        <Stack.Navigator initialRouteName="generator">
+          <Stack.Screen name="generator" component={HomeScreen} options={{ headerShown: false, navigationBarHidden: true }} />
+          <Stack.Screen name="modal" component={ModalScreen} options={{ presentation: 'modal', headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </ThemeProvider>
   );
 }
