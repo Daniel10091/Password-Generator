@@ -1,14 +1,16 @@
 export class PasswordService {
 
+  private static readonly server: string = "http://172.16.26.125:3000";
+
   public static getAll = async () => {
-    const response = await fetch('http://localhost:3000/passwords');
+    const response = await fetch(this.server + '/passwords');
     const passwords = await response.json();
     return passwords;
   }
 
   public static findById = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/passwords/${id}`);
+      const response = await fetch(this.server + `/passwords/${id}`);
       const password = await response.json();
       return password;
     } catch (error) {
@@ -17,7 +19,7 @@ export class PasswordService {
   }
 
   public static save = async (key: string, value: string) => {
-    await fetch('http://localhost:3000/passwords', {
+    await fetch(this.server + '/passwords', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -31,7 +33,7 @@ export class PasswordService {
   }
 
   public static update = async (id: string, key: string, value: string) => {
-    await fetch(`http://localhost:3000/passwords/${id}`, {
+    await fetch(this.server + `/passwords/${id}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -45,7 +47,7 @@ export class PasswordService {
   }
 
   public static async delete(id: string) {
-    await fetch(`http://localhost:3000/passwords/${id}`, {
+    await fetch(this.server + `/passwords/${id}`, {
       method: 'DELETE',
     })
   }
